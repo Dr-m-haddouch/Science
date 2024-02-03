@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz</title>
+    <style>
+    #header-image {
+    position: fixed;
+    top: 0px;
+    right: 100px;
+    background-image: url('kgs.png'); /* Update to your image file name */
+    width: 150px;
+    height: 150px;
+    background-size: cover; /* Ensure entire image is visible */
+    background-position: center center;
+    border-radius: 600px; /* Adjust the radius value as needed */
+    /* Additional styles if needed */
+}
+        body {
+            font-family: 'Arial', sans-serif;
+            background-image: url('sedimentary-rock.jpg'); /* Update to your image file name */
+            background-size: cover; /* Ensure entire image is visible */
+            background-repeat: no-repeat;
+            background-position: center center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+        #quiz-container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+            display: none;
+        }
+        #start-container {
+            text-align: center;
+        }
+        #start-button {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        #question {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .option {
+            padding: 10px;
+            margin: 5px;
+            background-color: #3498db;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            font-size: 26px;
+        }
+        .option:hover {
+            background-color: #2980b9;
+        }
+        #timer {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+<div id="header-image"></div> <!-- This is the header image container -->
+    <div id="quiz-container">
+        <div id="question"></div>
+        <button class="option" onclick="checkAnswer(0)"></button>
+        <button class="option" onclick="checkAnswer(1)"></button>
+        <button class="option" onclick="checkAnswer(2)"></button>
+        <button class="option" onclick="checkAnswer(3)"></button>
+        <div id="timer">Time: <span id="timer-value">--</span>s</div>
+    </div>
+
+    <div id="start-container">
+        <h2 id="quiz-title">Quiz</h2>
+        <button id="start-button" onclick="startQuiz()">Start Quiz</button>
+    </div>
+
+    <script>
+        var currentQuestion = 0;
+        var score = 0;
+        var timer;
+
+        var quizData = [
+{
+"question": "How do plants contribute to the weathering process of rocks?",
+"options": ["By cooling them down", "By dissolving them", "By breaking them up with their roots", "By compressing them"],
+"correctAnswer": 2
+},
+{
+"question": "What is the role of ice and wind in the erosion of rocks into sediments?",
+"options": ["They cause rocks to evaporate", "They break rocks into smaller particles", "They solidify rocks", "They induce crystallization"],
+"correctAnswer": 1
+},
+{
+"question": "What are sedimentary rocks made from?",
+"options": ["Molten lava", "Small pieces of other rocks", "Crystals", "Metallic minerals"],
+"correctAnswer": 1
+},
+{
+"question": "What is the process that continuously breaks up rocks, leading to the formation of sediments?",
+"options": ["Erosion", "Solidification", "Weathering", "Deposition"],
+"correctAnswer": 2
+},
+{
+"question": "How do high and low temperatures contribute to the breakdown of rocks?",
+"options": ["Solidification", "Weathering", "Erosion", "Deposition"],
+"correctAnswer": 1
+},
+{
+"question": "What happens to rocks weakened by weathering when they encounter rivers?",
+"options": ["They solidify", "They erode into sediments", "They evaporate", "They crystallize"],
+"correctAnswer": 1
+},
+{
+"question": "What process occurs when water in a river reaches the sea or a lake?",
+"options": ["Deposition", "Weathering", "Erosion", "Solidification"],
+"correctAnswer": 0
+},
+{
+"question": "How are the layers at the bottom of sedimentary rocks formed over millions of years?",
+"options": ["By evaporation", "By erosion", "By compression", "By solidification"],
+"correctAnswer": 2
+},
+{
+"question": "What binds sediments together to form sedimentary rock?",
+"options": ["Evaporation", "Cementation", "Weathering", "Erosion"],
+"correctAnswer": 1
+},
+{
+"question": "What is a key characteristic of sedimentary rocks?",
+"options": ["Volcanic origin", "Formation in layers", "High temperature resistance", "Crystalline structure"],
+"correctAnswer": 1
+},
+
+]
+        
+
+        function startQuiz() {
+            document.getElementById("start-container").style.display = "none";
+            document.getElementById("quiz-container").style.display = "block";
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            // Clear any existing timer
+            clearInterval(timer);
+
+            var questionElement = document.getElementById("question");
+            questionElement.textContent = quizData[currentQuestion].question;
+
+            // Speak out the question
+            speak(quizData[currentQuestion].question);
+
+            var options = quizData[currentQuestion].options;
+            for (var i = 0; i < options.length; i++) {
+                document.getElementsByClassName("option")[i].textContent = options[i];
+            }
+
+            // Start the timer when a new question is loaded
+            startTimer();
+        }
+
+        function speak(text) {
+            // Stop the current speech synthesis
+            window.speechSynthesis.cancel();
+
+            var utterance = new SpeechSynthesisUtterance(text);
+            window.speechSynthesis.speak(utterance);
+        }
+
+        var totalTime = 10 * quizData.length; // Total time for the whole quiz (15 seconds per question)
+        var timeLeft = totalTime;
+
+        function startTimer() {
+            timer = setInterval(function() {
+                document.getElementById("timer-value").textContent = timeLeft;
+                timeLeft--;
+
+                if (timeLeft < 0) {
+                    clearInterval(timer);
+                    speak("Time's up!");
+                    showResults();
+                }
+            }, 1000);
+        }
+
+        function checkAnswer(optionIndex) {
+            if (optionIndex === quizData[currentQuestion].correctAnswer) {
+                score++;
+            }
+
+            currentQuestion++;
+
+            if (currentQuestion < quizData.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            var questionElement = document.getElementById("question");
+
+            // Stop the current speech synthesis
+            window.speechSynthesis.cancel();
+
+            questionElement.textContent = "Quiz Completed! Your Score: " + score + "/" + quizData.length;
+
+            // Hide the options
+            var options = document.getElementsByClassName("option");
+            for (var i = 0; i < options.length; i++) {
+                options[i].style.display = "none";
+            }
+
+            // Stop the timer when the quiz is completed
+            clearInterval(timer);
+        }
+
+    </script>
+</body>
+</html>
+
+
+
+
+

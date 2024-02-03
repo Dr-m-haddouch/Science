@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Cycle - Fill in the Blanks</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #exercise {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: justify;
+            width: 900px;
+            left: 200px;
+        }
+
+        #title {
+            font-size: 28px;
+            font-family: 'Times New Roman', sans-serif; /* Font family for the title */
+            text-align: center
+        }
+
+        #paragraph {
+            font-size: 24px;
+            font-family: 'Times New Roman', sans-serif; /* Font family for the paragraph */
+        }
+
+        .blank {
+            font-weight: bold;
+        }
+
+        .incorrect {
+            color: red;
+        }
+
+        input {
+            width: 80px;
+            text-align: center;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="exercise">
+        <p id="title">Fill in the blanks about the Rock Cycle:</p>
+        
+        <p id="paragraph">The rock cycle is a continuous process that involves the formation, breakdown,
+        and reformation of rocks. Rocks can transform from one type to another through various geological processes. 
+        For example, sedimentary rocks are formed through the accumulation and cementation of 
+        <span id="blank1" contenteditable="true" class="blank" data-answer="sediments">____</span>. 
+        When subjected to heat and pressure, sedimentary rocks can undergo metamorphism and turn into
+        <span id="blank2" contenteditable="true" class="blank" data-answer="metamorphic">____</span> rocks. 
+        If these rocks melt and cool, they can solidify into 
+        <span id="blank3" contenteditable="true" class="blank" data-answer="igneous">____</span> rocks.</p>
+        
+        <hr>
+
+        <button onclick="checkAnswers()">Check Answers</button>
+        <p id="result"></p>
+    </div>
+
+    <script>
+        function checkAnswers() {
+            var blanks = document.getElementsByClassName("blank");
+            var correct = true;
+
+            for (var i = 0; i < blanks.length; i++) {
+                var userAnswer = blanks[i].textContent.trim().toLowerCase();
+                var correctAnswer = blanks[i].getAttribute("data-answer");
+
+                if (userAnswer !== correctAnswer) {
+                    blanks[i].classList.add("incorrect");
+                    correct = false;
+                } else {
+                    blanks[i].classList.remove("incorrect");
+                }
+            }
+
+            var resultElement = document.getElementById("result");
+            if (correct) {
+                resultElement.textContent = "All answers are correct!";
+                resultElement.style.color = "green";
+            } else {
+                resultElement.textContent = "Some answers are incorrect.";
+                resultElement.style.color = "red";
+            }
+        }
+    </script>
+</body>
+</html>
+
+

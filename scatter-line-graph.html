@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Chart</title>
+    <!-- Include Chart.js library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 50%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        canvas {
+            max-width: 80%; /* Adjust the max-width of the canvas as needed */
+            height: auto; /* Maintain the aspect ratio */
+        }
+        .graph-container {
+            max-width: 500px; /* Adjust the max-width of the container as needed */
+            margin: auto; /* Center the container */
+        }
+        .chart-type-buttons {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Data Table</h2>
+<form id="dataForm">
+    <label for="dataValueX">Data Value X:</label>
+    <input type="number" id="dataValueX" required>
+    <label for="dataValueY">Data Value Y:</label>
+    <input type="number" id="dataValueY" required>
+    <button type="button" onclick="addRow()">Add Row</button>
+</form>
+
+<table id="dataTable">
+    <thead>
+        <tr>
+            <th>Data Value X</th>
+            <th>Data Value Y</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Initial rows go here -->
+    </tbody>
+</table>
+
+<!-- Container for axis labels -->
+<div id="axisLabelsContainer">
+    <label for="xAxisLabel">X-Axis Label:</label>
+    <input type="text" id="xAxisLabel" placeholder="Enter X-Axis Label">
+    <label for="yAxisLabel">Y-Axis Label:</label>
+    <input type="text" id="yAxisLabel" placeholder="Enter Y-Axis Label">
+    <button type="button" onclick="updateAxisLabels()">Update Labels</button>
+</div>
+
+<!-- Container for chart type buttons -->
+<div class="chart-type-buttons">
+    <button type="button" onclick="changeChartType('scatter')">Scatter Plot</button>
+    <button type="button" onclick="changeChartType('line')">Line Chart</button>
+    <!-- Add more buttons for other chart types if needed -->
+</div>
+
+<div class="graph-container">
+    <h2>Interactive Chart</h2>
+    <canvas id="myChart" width="400" height="200"></canvas>
+</div>
+
+<script>
+    let selectedRow = null;
+    let currentChartType = 'scatter'; // Default chart type
+    let myChart; // Chart instance
+
+    // Get the data from the table and format it for the chart
+    function getDataFromTable() {
+        const data = [];
+        const tableRows = document.querySelectorAll('#dataTable tbody tr');
+
+        tableRows.forEach(row => {
+            const cells = row.cells;
+            const valueX = parseFloat(cells[0].textContent); // Use parseFloat for decimal numbers
+            const valueY = parseFloat(cells[1].textContent); // Use parseFloat for decimal numbers
+
+            data.push({ x: valueX, y: valueY });
+        });
+
+        return data;
+    }
+
+    // Create a new chart with the initial data and axis labels
+    function createChart() {
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const initialData = getDataFromTable();
+        const initialXLabel = 'X-Axis';
+        const initialYLabel = 'Y-Axis';
+
+        myChart = new Chart(ctx, {
+            type: currentChartType,
+            data: {
+                datasets: [{
+                    label: 'Chart Data',
+                    data: initialData,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    x: {
+                        type: 'linear',
+                        position: 'bottom',
+                        title: {
+                            display: true,
+                            text: initialXLabel
+                        }
+                    },
+                    y: {
+                        type: 'linear',
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: initialYLabel
+                        }
+                    }
+                },
+                responsive: true
+            }
+        });
+    }
+
+    // Update the chart when the data in the table changes
+    function updateChart() {
+        const newData = getDataFromTable();
+        myChart.data.datasets[0].data = newData;
+        myChart.update();
+    }
+
+    // Add a new row to the table
+    function addRow() {
+        const valueXInput = document.getElementById('dataValueX');
+        const valueYInput = document.getElementById('dataValueY');
+        const tableBody = document.querySelector('#dataTable tbody');
+
+        // Check if editing a row
+        if (selectedRow) {
+            selectedRow.cells[0].textContent = valueXInput.value;
+            selectedRow.cells[1].textContent = valueYInput.value;
+            selectedRow = null;
+        } else {
+            // Create a new row
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${valueXInput.value}</td>
+                <td>${valueYInput.value}</td>
+                <td>
+                    <button type="button" onclick="editRow(this)">Edit</button>
+                    <button type="button" onclick="removeRow(this)">Remove</button>
+                </td>
+            `;
+
+            // Append the new row to the table
+            tableBody.appendChild(newRow);
+        }
+
+        // Clear input fields
+        valueXInput.value = '';
+        valueYInput.value = '';
+
+        // Update the chart
+        updateChart();
+    }
+
+    // Remove a row from the table
+    function removeRow(button) {
+        const row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+
+        // Update the chart
+        updateChart();
+    }
+
+    // Edit a row in the table
+    function editRow(button) {
+        selectedRow = button.parentNode.parentNode;
+        document.getElementById('dataValueX').value = selectedRow.cells[0].textContent;
+        document.getElementById('dataValueY').value = selectedRow.cells[1].textContent;
+    }
+
+    // Update axis labels
+    function updateAxisLabels() {
+        const xAxisLabel = document.getElementById('xAxisLabel').value;
+        const yAxisLabel = document.getElementById('yAxisLabel').value;
+
+        // Update chart options with new axis labels
+        myChart.options.scales.x.title.text = xAxisLabel;
+        myChart.options.scales.y.title.text = yAxisLabel;
+
+        // Update the chart
+        myChart.update();
+    }
+
+    // Change chart type
+    function changeChartType(type) {
+        currentChartType = type;
+
+        // Destroy the existing chart if it exists
+        if (myChart) {
+            myChart.destroy();
+        }
+
+        // Create a new chart with the selected type
+        createChart();
+
+        // Update the chart reference
+        myChart = newChart;
+    }
+
+    // Create the initial chart
+    createChart();
+</script>
+
+</body>
+</html>

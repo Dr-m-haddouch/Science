@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemistry Quiz</title>
+<style>
+    #my-name {
+        position: fixed;
+        top: 640px;
+        right: 77px;
+        color: white; /* Set the text color */
+        font-size: 30px;
+        font-weight: bold;
+    }
+    body {
+        background-image: url('soil.jpg');
+        background-size: 1400px 750px;
+        background-repeat: no-repeat;
+        background-position: center 0px; /* Adjust the vertical position */
+    }
+    label, select {
+        font-size: 36px;
+    }
+    #question-frame {
+        width: 50%;
+        margin: 140px auto; /* Center the frame */;
+        padding: 50px;
+        border: 2px solid #ccc;
+        text-align: center;
+        background-color: white;
+        background: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 1.0)), url('soil.jpg');
+        background-size: 860px 400px, cover; /* Adjust the size of the image */
+        background-repeat: no-repeat;
+        background-position: center center;
+        position: relative; /* Make the container relative for absolute positioning */
+    }
+    #next-button, #prev-button, #start-button, #submit-button {
+        font-size: 26px;
+        margin: 10px;
+    }
+#header-image {
+    position: fixed;
+    top: 0px;
+    right: 100px;
+    background-image: url('kgs.png'); /* Update to your image file name */
+    width: 150px;
+    height: 150px;
+    background-size: cover; /* Ensure entire image is visible */
+    background-position: center center;
+    border-radius: 600px; /* Adjust the radius value as needed */
+    /* Additional styles if needed */
+}
+</style>
+
+    <script>
+        var currentQuestion = 0;
+        var totalQuestions = 0;
+        var timeLeft = 15;
+        var timer;
+        var audioCorrect = new Audio('correct.mp3');
+        var audioSad = new Audio('sad.mp3');
+        var audioTick = new Audio('tick.mp3');
+
+        var questions = [{'question': 'What is the process by which molten rock material cools and solidifies to form rocks?', 'options': ['Solidification', 'Weathering', 'Erosion', 'Deposition'], 'correct_answer': 'Solidification'}, {'question': "Which term refers to rocks that form from the cooling and solidification of magma beneath the Earth's surface?", 'options': ['Intrusive Igneous Rock', 'Extrusive Igneous Rock', 'Sedimentary Rock', 'Metamorphic Rock'], 'correct_answer': 'Intrusive Igneous Rock'}, {'question': "What type of rock is formed by the cooling and solidification of lava on the Earth's surface?", 'options': ['Intrusive Igneous Rock', 'Extrusive Igneous Rock', 'Sedimentary Rock', 'Metamorphic Rock'], 'correct_answer': 'Extrusive Igneous Rock'}, {'question': 'What do geologists study?', 'options': ['Rocks', 'Fossils', "Earth's Processes", 'All of the Above'], 'correct_answer': 'All of the Above'}, {'question': 'What is the term for a naturally occurring, inorganic solid substance with a specific chemical composition and crystal structure?', 'options': ['Mineral', 'Rock', 'Gemstone', 'Fossil'], 'correct_answer': 'Mineral'}, {'question': 'How are crystals formed in rocks?', 'options': ['Evaporation', 'Solidification', 'Weathering', 'Erosion'], 'correct_answer': 'Solidification'}, {'question': 'What is the term for a rock that has a well-defined, ordered arrangement of atoms resulting in a geometric shape?', 'options': ['Crystal', 'Sediment', 'Mineraloid', 'Granule'], 'correct_answer': 'Crystal'}, {'question': 'What is the process by which rocks are broken down into smaller particles due to physical, chemical, or biological processes?', 'options': ['Weathering', 'Erosion', 'Deposition', 'Cementation'], 'correct_answer': 'Weathering'}, {'question': 'Which term refers to rocks that form from the accumulation and cementation of mineral and organic particles?', 'options': ['Sedimentary Rock', 'Igneous Rock', 'Metamorphic Rock', 'Crystalline Rock'], 'correct_answer': 'Sedimentary Rock'}, {'question': 'What is the term for a solid mass of minerals or mineral-like matter that occurs naturally?', 'options': ['Rock', 'Mineral', 'Crystal', 'Pebble'], 'correct_answer': 'Rock'}];
+
+        function startQuiz() {
+            totalQuestions = questions.length;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            document.getElementById("question-label").innerText = questions[currentQuestion].question;
+
+            var select = document.getElementById("user-answer");
+            select.innerHTML = "";
+            for (var i = 0; i < questions[currentQuestion].options.length; i++) {
+                var option = questions[currentQuestion].options[i];
+                var optionElement = document.createElement("option");
+                optionElement.value = option;
+                optionElement.text = option;
+                select.add(optionElement);
+            }
+
+            document.getElementById("submit-button").disabled = false;
+            document.getElementById("next-button").disabled = false;
+            document.getElementById("prev-button").disabled = false;
+
+            startTimer();
+            readQuestion(questions[currentQuestion].question);
+        }
+
+function stopSpeech() {
+    window.speechSynthesis.cancel();
+}
+
+        function startTimer() {
+            clearInterval(timer);
+            timeLeft = 15;
+            timer = setInterval(function() {
+                document.getElementById("timer").innerText = timeLeft + "s";
+                timeLeft--;
+
+                if (timeLeft === 9) {
+                    // Play ticking sound when 5 seconds remaining
+                    playTickingSound();
+                }
+
+                if (timeLeft === 0) {
+                    document.getElementById("timer").innerText = "Time's up!";
+                    readQuestion("Time's up!");
+                    clearInterval(timer); // Stop the countdown immediately
+                    //submitAnswer();
+                }
+            }, 1000);
+        }
+
+        function playTickingSound() {
+            audioTick.play();
+        }
+
+        function submitAnswer() {
+            clearInterval(timer);
+            stopSpeech();
+            var userAnswer = document.getElementById("user-answer").value.toLowerCase();
+            var correctAnswer = questions[currentQuestion].correct_answer.toLowerCase();
+            var htmlResults = "<h2>Results</h2><p>";
+
+            // Check answer and display result
+            htmlResults += checkAnswer("Question " + (currentQuestion + 1), userAnswer, correctAnswer);
+
+            // Display correct answer
+            htmlResults += correctAnswerText(correctAnswer);
+
+            htmlResults += "</p>";
+
+            // Display results
+            document.getElementById("results").innerHTML = htmlResults;
+
+            // Play music for correct answers
+            var isCorrect = userAnswer === correctAnswer;
+            if (isCorrect) {
+                audioCorrect.play();
+            } else {
+                audioSad.play();
+            }
+
+            // Reset timer for the next question
+            timeLeft = 15;
+
+            // Disable the submit button after submission
+            document.getElementById("submit-button").disabled = true;
+
+            // Move to the next question
+            //readQuestion("Next question.");
+        }
+
+        function checkAnswer(questionLabel, userAnswer, correctAnswer) {
+            var isCorrect = userAnswer === correctAnswer;
+            var resultText = questionLabel + ": " + (isCorrect ? "Correct!" : "Incorrect. The correct answer is:" + correctAnswer );
+
+            // Display smiley image
+            var smileyImage = "<img src='" + (isCorrect ? 'happy_emoji.jpg' : 'sad_emoji.png') + "' alt='Smiley' width='50' height='50'>";
+            resultText += smileyImage;
+            
+            return "<p style='font-size: 16px;'>" + resultText + "</p>";
+        }
+
+        function correctAnswerText(correctAnswer) {
+            return "<p style='font-size: 16px;'>Correct Answer: " + correctAnswer + "</p>";
+        }
+
+
+    function nextQuestion() {
+        currentQuestion++;
+        stopSpeech();
+        // Hide the results
+        document.getElementById("results").innerHTML = "";
+        
+        if (currentQuestion < totalQuestions) {
+            loadQuestion();
+        } else {
+            document.getElementById("question-frame").innerHTML = "<h2 style='font-size: 40px;'>Quiz Completed</h2>" ;
+
+            // Display all questions and answers
+             var allQuestionsAnswers = "<div id='all-questions-answers'>";
+              for (var i = 0; i < questions.length; i++) {
+                //allQuestionsAnswers += "<h3>Question " + (i + 1) + "</h3>";
+                //allQuestionsAnswers += "<p><strong>Question:</strong> " + questions[i].question + "</p>";
+                //allQuestionsAnswers += "<p><strong>Correct Answer:</strong> " + questions[i].correct_answer + "</p>";
+            }
+            allQuestionsAnswers += "</div>";
+
+            document.getElementById("question-frame").innerHTML += allQuestionsAnswers;
+
+            document.getElementById("next-button").disabled = true;
+            document.getElementById("prev-button").disabled = true;
+            document.getElementById("submit-button").disabled = true;
+        }
+    }
+        
+
+        
+        
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+
+        function readQuestion(text) {
+            // Use text-to-speech engine to speak the given text
+            window.speechSynthesis.speak(new SpeechSynthesisUtterance(text));
+        }
+    </script>
+</head>
+<body>
+    <div id="header-image"></div> <!-- This is the header image container -->
+    <div id="question-frame">
+        
+        <label id="question-label"></label>
+        <select id="user-answer"></select><br>
+
+        <button type="button" id="start-button" onclick="startQuiz();">Start Quiz</button>
+        <button type="button" id="submit-button" onclick="submitAnswer();" disabled>Submit Answer</button>
+        <button type="button" id="next-button" onclick="nextQuestion();" disabled>Next</button>
+        <button type="button" id="prev-button" onclick="prevQuestion();" disabled>Previous</button>
+
+        <div id="timer"></div>
+        <div id="results"></div>
+
+        <audio id="audio-correct" src="correct.mp3"></audio>
+        <audio id="audio-sad" src="sad.mp3"></audio>
+        <audio id="audio-tick" src="tick.mp3"></audio>
+    </div>
+    <!-- Dr. Ait Hadoduch Mohammed -->
+    <div id="my-name">
+        <p>Dr. M Ait Haddouch</p>
+    </div>
+</body>
+</html>
