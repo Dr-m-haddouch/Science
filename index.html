@@ -26,7 +26,8 @@
 
             // Perform server-side authentication
             try {
-                const response = await fetch('/authenticate', {
+           const response = await fetch('http://localhost:3000/authenticate', {
+
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
