@@ -1,0 +1,64 @@
+<!-- login.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <!-- Include Firebase SDK version 8 -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+    <script>
+        // Initialize Firebase with your configuration
+        const firebaseConfig = {
+            apiKey: 'YOUR_API_KEY',
+            authDomain: 'YOUR_AUTH_DOMAIN',
+            projectId: 'YOUR_PROJECT_ID',
+            storageBucket: 'YOUR_STORAGE_BUCKET',
+            messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
+            appId: 'YOUR_APP_ID',
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        async function authenticateAndRedirect() {
+            const enteredEmail = document.getElementById('username').value;
+            const enteredPassword = document.getElementById('password').value;
+
+            try {
+                // Sign in with Firebase Authentication
+                await auth.signInWithEmailAndPassword(enteredEmail, enteredPassword);
+
+                // Redirect to the specified HTML file (assuming double_html.html)
+                window.location.href = 'double_html.html';
+            } catch (error) {
+                console.error('Authentication error:', error.code, error.message);
+                alert('Invalid username or password. Access denied.');
+            }
+        }
+
+        function redirectToRegister() {
+            // Redirect to the registration page (assuming register.html)
+            window.location.href = 'register.html';
+        }
+    </script>
+</head>
+<body>
+    <div id="loginContainer">
+        <h2>Login</h2>
+        <label for="username">Username (Email):</label>
+        <input type="text" id="username" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" required><br>
+
+        <button onclick="authenticateAndRedirect()">Login</button>
+        <button onclick="redirectToRegister()">Register</button>
+    </div>
+
+    <div id="externalContent" style="display: none;"></div>
+</body>
+</html>
