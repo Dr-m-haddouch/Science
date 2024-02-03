@@ -4,26 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quiz</title>
+    <title>Drag and Drop Quiz</title>
     <style>
-    #header-image {
-    position: fixed;
-    top: 0px;
-    right: 100px;
-    background-image: url('kgs.png'); /* Update to your image file name */
-    width: 150px;
-    height: 150px;
-    background-size: cover; /* Ensure entire image is visible */
-    background-position: center center;
-    border-radius: 600px; /* Adjust the radius value as needed */
-    /* Additional styles if needed */
-}
         body {
+            
             font-family: 'Arial', sans-serif;
-            background-image: url('sedimentary-rock.jpg'); /* Update to your image file name */
-            background-size: 400 400; /* Ensure entire image is visible */
-            background-repeat: no-repeat;
-            background-position: center center;
+            background-color: #f0f0f0;
+            font-size: 20px;
+            position: fixed;
+            top: 0px;
+            right: 1280px;
             margin: 0;
             padding: 0;
             display: flex;
@@ -32,122 +22,310 @@
             height: 100vh;
             text-align: center;
         }
+
+        #question {
+            margin-bottom: 20px;
+        }
+
         #quiz-container {
             background-color: rgba(255, 255, 255, 0.8);
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            max-width: 600px;
-            margin: 0 auto;
-            display: none;
+            max-width: 200px;
+            margin: 22 auto;
         }
-        #start-container {
-            text-align: center;
+
+        .drag-container {
+            display: flex;
+            flex-direction: column; /* Arrange items vertically */
+            align-items: center; /* Center items horizontally */
+            margin: 20px 0;
         }
-        #start-button {
-            padding: 10px 20px;
-            font-size: 18px;
-            cursor: pointer;
-        }
-        #question {
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-        .option {
-            padding: 10px;
-            margin: 5px;
+
+        .drag-item {
+            width: 130px;
+            height: 40px;
             background-color: #3498db;
             color: #fff;
-            cursor: pointer;
-            border: none;
+            text-align: center;
+            line-height: 20px;
             border-radius: 5px;
-            font-size: 26px;
+            cursor: move;
+            margin-bottom: 10px; /* Add margin between items */
         }
-        .option:hover {
-            background-color: #2980b9;
+
+        .drop-zone {
+            width: 130px;
+            height: 70px;
+            border: 2px solid black; /* Add a white border */
+            border-radius: 5px;
+            cursor: pointer;
+            background: white;
+            margin: 10px;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
+
+        .correct-drop-zone {
+            background-color: #2ecc71;
+            color: #fff;
+        }
+
+        .incorrect-drop-zone {
+            background-color: #e74c3c;
+            color: #fff;
+        }
+
+        #drop-zone-1 {
+            top:  85px;
+            left: 1040px;
+        }
+
+        #drop-zone-2 {
+            top: 380px;
+            left: 300px;
+        }
+
+        #drop-zone-3 {
+            top: 345px;
+            left: 1020px;
+        }
+
+        #drop-zone-4 {
+            top: 315px;
+            left: 660px;
+        }
+        #drop-zone-5 {
+            top: 85px;
+            left: 510px;
+        }
+        #drop-zone-6 {
+            top: 380px;
+            left: 1270px;
+        }
+        #drop-zone-7 {
+            top: 315px;
+            left: 850px;
+        }
+        #drop-zone-8 {
+            top: 535px;
+            left: 766px;
+        }
+        #drop-zone-9 {
+            top: 424px;
+            left: 498px;
+        }
+        #image {
+            position: fixed;
+            top: -200px;
+            right: 100px;
+            width: 1150px;
+            height: 1150px;
+            background-image: url('Rock-Cycle.png'); /* Update to your image file name */
+            background-size: contain; /* Ensure entire image is visible */
+            background-position: center center;
+            border-radius: 10px; /* Adjust the radius value as needed */
+            background-repeat: no-repeat;
+            /* Additional styles if needed */
+        }
+
+        #result {
+            margin-top: 20px;
+            color: green; /* Add styles for the result message */
+        }
+
         #timer {
-            margin-top: 10px;
-            font-size: 16px;
+            margin-top: 20px;
+            color: #333; /* Timer color */
         }
     </style>
 </head>
 <body>
-<div id="header-image"></div> <!-- This is the header image container -->
+    <div id="image"></div>
     <div id="quiz-container">
-        <div id="question"></div>
-        <button class="option" onclick="checkAnswer(0)"></button>
-        <button class="option" onclick="checkAnswer(1)"></button>
-        <button class="option" onclick="checkAnswer(2)"></button>
-        <button class="option" onclick="checkAnswer(3)"></button>
-        <div id="timer">Time: <span id="timer-value">--</span>s</div>
+        <div id="question">Match the correct answer with the corresponding drop zone.</div>
+
+        <div class="drag-container">
+            <div id="drag-item-1" class="drag-item" draggable="true" ondragstart="drag(event)">Melting</div>
+            <div id="drag-item-2" class="drag-item" draggable="true" ondragstart="drag(event)">Sedimentation</div>
+            <div id="drag-item-3" class="drag-item" draggable="true" ondragstart="drag(event)">Melting</div>
+            <div id="drag-item-4" class="drag-item" draggable="true" ondragstart="drag(event)">Weathering and erosion</div>
+            <div id="drag-item-5" class="drag-item" draggable="true" ondragstart="drag(event)">Heat and Pressure</div>
+            <div id="drag-item-6" class="drag-item" draggable="true" ondragstart="drag(event)">Cooling</div>
+            <div id="drag-item-7" class="drag-item" draggable="true" ondragstart="drag(event)">Heat and Pressure</div>
+            <div id="drag-item-8" class="drag-item" draggable="true" ondragstart="drag(event)">Weathering and erosion</div>
+            <div id="drag-item-9" class="drag-item" draggable="true" ondragstart="drag(event)">Weathering and erosion</div>
+        </div>
+
+        <div class="drop-zone" id="drop-zone-1" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div></div>
+        </div>
+        <div class="drop-zone" id="drop-zone-2" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div></div>
+        </div>
+        <div class="drop-zone" id="drop-zone-3" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div></div>
+        </div>
+        <div class="drop-zone" id="drop-zone-4" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div></div>
+        </div>
+        <div class="drop-zone" id="drop-zone-5" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div></div>
+        </div>
+        <div class="drop-zone" id="drop-zone-6" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div></div>
+        </div>
+        <div class="drop-zone" id="drop-zone-7" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div></div>
+        </div>
+        <div class="drop-zone" id="drop-zone-8" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div></div>
+        </div>
+        <div class="drop-zone" id="drop-zone-9" ondrop="drop(event)" ondragover="allowDrop(event)">
+            <div></div>
+        </div>
+
+        <div id="result"></div>
+        <button onclick="validateResults()">Validate Results</button>
+        
+        <div id="timer">Time Left: <span id="time">40</span> seconds</div>
     </div>
 
-    <div id="start-container">
-        <h2 id="quiz-title">Quiz</h2>
-        <button id="start-button" onclick="startQuiz()">Start Quiz</button>
-    </div>
+<script>
+    var timeLeft = 40; // Set the initial time in seconds
+    var timerId; // Variable to store the timer ID
+    var isTimeUp = false; // Flag to check if time is up
+    
+    function updateTimer() {
+    document.getElementById('time').textContent = timeLeft;
 
-    <script>
-        var currentQuestion = 0;
-        var score = 0;
-        var timer;
+    if (timeLeft === 0) {
+        // Perform actions when time runs out
+        isTimeUp = true;
+        document.removeEventListener('dragstart', drag);
+        document.removeEventListener('dragover', allowDrop);
+        document.removeEventListener('drop', drop);
 
-        var quizData = [
-   {
-"question": "What are sedimentary rocks made from?",
-"options": ["Molten lava", "Small pieces of other rocks", "Crystals", "Metallic minerals"],
-"correctAnswer": 1
-},
-{
-"question": "What is the process that continuously breaks up rocks, leading to the formation of sediments?",
-"options": ["Erosion", "Solidification", "Weathering", "Deposition"],
-"correctAnswer": 2
-},
-{
-"question": "How do high and low temperatures contribute to the breakdown of rocks?",
-"options": ["Solidification", "Weathering", "Erosion", "Deposition"],
-"correctAnswer": 1
-},
-{
-"question": "What happens to rocks weakened by weathering when they encounter rivers?",
-"options": ["They solidify", "They erode into sediments", "They evaporate", "They crystallize"],
-"correctAnswer": 1
-},
-{
-"question": "What process occurs when water in a river reaches the sea or a lake?",
-"options": ["Deposition", "Weathering", "Erosion", "Solidification"],
-"correctAnswer": 0
-},
-{
-"question": "How are the layers at the bottom of sedimentary rocks formed over millions of years?",
-"options": ["By evaporation", "By erosion", "By compression", "By solidification"],
-"correctAnswer": 2
-},
-{
-"question": "What binds sediments together to form sedimentary rock?",
-"options": ["Evaporation", "Cementation", "Weathering", "Erosion"],
-"correctAnswer": 1
-},
-{
-"question": "What is a key characteristic of sedimentary rocks?",
-"options": ["Volcanic origin", "Formation in layers", "High temperature resistance", "Crystalline structure"],
-"correctAnswer": 1
-},
-{
-"question": "How do plants contribute to the weathering process of rocks?",
-"options": ["By cooling them down", "By dissolving them", "By breaking them up with their roots", "By compressing them"],
-"correctAnswer": 2
-},
-{
-"question": "What is the role of ice and wind in the erosion of rocks into sediments?",
-"options": ["They cause rocks to evaporate", "They break rocks into smaller particles", "They solidify rocks", "They induce crystallization"],
-"correctAnswer": 1
-},
-]
+        // Call validateResults to automatically validate the results
+        validateResults();
 
-    </script>
+        document.getElementById('timer').style.color = 'red';
+    } else {
+        timeLeft--;
+        timerId = setTimeout(updateTimer, 1000); // Update timer every second
+    }
+}
+    
+    
+    
+
+    // Start the timer when the page loads
+    window.onload = function () {
+        updateTimer();
+    };
+
+function drag(ev) {
+    if (!isTimeUp) {
+        ev.dataTransfer.setData("text", ev.target.id);
+    }
+}
+
+function allowDrop(ev) {
+    if (!isTimeUp) {
+        ev.preventDefault();
+    }
+}
+
+function drop(ev) {
+    if (!isTimeUp) {
+        ev.preventDefault();
+        var data = ev.dataTransfer.getData("text");
+        var draggedElement = document.getElementById(data);
+
+        // Set the content of the drop zone with the text content of the dragged element
+        ev.target.innerHTML = draggedElement.textContent;
+
+        // Remove the original element from the quiz container
+        draggedElement.remove();
+    }
+}
+
+
+    
+function validateResults() {
+    // Stop the timer when you click on the "Validate Results" button
+    clearTimeout(timerId);
+
+    var dropZones = document.querySelectorAll('.drop-zone');
+
+    dropZones.forEach(function (dropZone) {
+        var dropZoneId = dropZone.id;
+        var dropZoneNumber = dropZoneId.split('-')[2];
+
+        // Trim extra spaces from the drop zone content
+        var dropZoneContent = dropZone.textContent.trim();
+
+        // Map the drop zone number to the corresponding drag item
+        var expectedContent = {
+            '1': "Melting",
+            '2': "Sedimentation",
+            '3': "Melting",
+            '4': "Weathering and erosion",
+            '5': "Heat and Pressure",
+            '6': "Cooling",
+            '7': "Heat and Pressure",
+            '8': "Weathering and erosion",
+            '9': "Weathering and erosion"
+        }[dropZoneNumber];
+
+        if (dropZoneContent === expectedContent) {
+            dropZone.classList.remove("incorrect-drop-zone");
+            dropZone.classList.add("correct-drop-zone");
+        } else {
+            dropZone.classList.remove("correct-drop-zone");
+            dropZone.classList.add("incorrect-drop-zone");
+        }
+    });
+
+    // Display the result message in the #result div
+    var correctDropZones = document.querySelectorAll('.correct-drop-zone');
+    var allDropZones = document.querySelectorAll('.drop-zone');
+
+    if (correctDropZones.length === allDropZones.length) {
+        document.getElementById('result').textContent = "All answers are correct!";
+        document.getElementById('result').style.color = 'green';
+    } else {
+        document.getElementById('result').textContent = "Some answers are incorrect.";
+        document.getElementById('result').style.color = 'red';
+    }
+}
+
+
+    function displayResult() {
+        var dropZones = document.querySelectorAll('.drop-zone');
+
+        dropZones.forEach(function (dropZone) {
+            var dropZoneId = dropZone.id;
+            var dropZoneNumber = dropZoneId.split('-')[2];
+
+            if (dropZone.textContent === "Answer " + dropZoneNumber) {
+                dropZone.classList.remove("incorrect-drop-zone");
+                dropZone.classList.add("correct-drop-zone");
+            } else {
+                dropZone.classList.remove("correct-drop-zone");
+                dropZone.classList.add("incorrect-drop-zone");
+            }
+        });
+
+        document.getElementById('result').textContent = isTimeUp ? "Time's up!" : "Results validated!";
+    }
+</script>
+
+
+
 </body>
 </html>
-
 
