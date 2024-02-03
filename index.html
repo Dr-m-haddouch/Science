@@ -1,9 +1,10 @@
+<!-- register.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rocks, the rock cycle and soil</title>
+    <title>Register</title>
 
     <!-- Include Firebase SDK version 8 -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -23,41 +24,35 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
-        async function authenticateAndRedirect() {
-            const enteredEmail = document.getElementById('username').value;
-            const enteredPassword = document.getElementById('password').value;
+        async function registerUser() {
+            const enteredEmail = document.getElementById('registerEmail').value;
+            const enteredPassword = document.getElementById('registerPassword').value;
 
             try {
-                // Sign in with Firebase Authentication
-                await auth.signInWithEmailAndPassword(enteredEmail, enteredPassword);
+                // Create user with Firebase Authentication
+                await auth.createUserWithEmailAndPassword(enteredEmail, enteredPassword);
 
-                // Redirect to the specified HTML file
-                window.location.href = 'double_html.html';
+                alert('Registration successful. You can now log in.');
+                // Redirect to the login page (assuming login page is named login.html)
+                window.location.href = 'login.html';
             } catch (error) {
-                console.error('Authentication error:', error.code, error.message);
-                alert('Invalid username or password. Access denied.');
+                console.error('Registration error:', error.code, error.message);
+                alert('Registration failed. Please try again.');
             }
-        }
-
-        function redirectToRegister() {
-            // Redirect to the registration page (create a new HTML file for registration)
-            window.location.href = 'register.html';
         }
     </script>
 </head>
 <body>
-    <div id="loginContainer">
-        <h2>Login</h2>
-        <label for="username">Username (Email):</label>
-        <input type="text" id="username" required><br>
+    <div id="registerContainer">
+        <h2>Register</h2>
+        <label for="registerEmail">Email:</label>
+        <input type="text" id="registerEmail" required><br>
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" required><br>
+        <label for="registerPassword">Password:</label>
+        <input type="password" id="registerPassword" required><br>
 
-        <button onclick="authenticateAndRedirect()">Login</button>
-        <button onclick="redirectToRegister()">Register</button>
+        <button onclick="registerUser()">Register</button>
     </div>
-
-    <div id="externalContent" style="display: none;"></div>
 </body>
 </html>
+
