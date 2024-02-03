@@ -3,28 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rocks, the Rock Cycle and Soil</title>
+    <title>Rocks, the rock cycle and soil</title>
 </head>
 <body>
-    <h1>Rocks, the Rock Cycle and Soil by Dr. M Ait haddouch</h1>
-    <button onclick="loadExternalHTML('Igneous_Rock_quiz.html')">Igneous Rock</button>
-    <button onclick="loadExternalHTML('sediments_Rock_quiz.html')">Sediments Rock</button>
-    <button onclick="loadExternalHTML('Rock_cycle_dragdrop.html')">Rock cycle</button>
-    <button onclick="loadExternalHTML('rock_cycle_fillblank.html')">Fill the blank</button>
-    <button onclick="loadExternalHTML('scatter-line-graph.html')">Make Graph</button> 
-    <div id="externalContent"></div>
+    <div id="loginContainer">
+        <h2>Login</h2>
+        <label for="username">Username:</label>
+        <input type="text" id="username" required><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" required><br>
+
+        <button onclick="authenticateAndRedirect()">Login</button>
+    </div>
+
+    <div id="externalContent" style="display: none;"></div>
 
     <script>
-        function loadExternalHTML(filePath) {
-            var iframe = document.createElement('iframe');
-            iframe.src = filePath;
-            iframe.style.width = '100%';
-            iframe.style.height = '700px';
-            document.getElementById('externalContent').innerHTML = ''; // Clear previous content
-            document.getElementById('externalContent').appendChild(iframe);
+        async function authenticateAndRedirect() {
+            var enteredUsername = document.getElementById('username').value;
+            var enteredPassword = document.getElementById('password').value;
+
+            // Perform server-side authentication
+            try {
+                const response = await fetch('/authenticate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ username: enteredUsername, password: enteredPassword }),
+                });
+
+                if (response.ok) {
+                    // Redirect to the specified HTML file
+                    window.location.href = 'double_html.html';
+                } else {
+                    alert('Invalid username or password. Access denied.');
+                }
+            } catch (error) {
+                console.error('Authentication error:', error);
+                alert('Error during authentication. Please try again.');
+            }
         }
     </script>
-
 </body>
 </html>
-
