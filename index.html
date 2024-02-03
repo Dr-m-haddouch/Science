@@ -18,27 +18,31 @@
   storageBucket: 'science-0.appspot.com',
   messagingSenderId: '147611003857',
   appId: '1:147611003857:web:961e5e301a133576784ef0',
-
       };
 
-      firebase.initializeApp(firebaseConfig);
 
-      async function authenticateAndRedirect() {
-        const enteredEmail = document.getElementById('username').value; // Assuming username is actually an email
-        const enteredPassword = document.getElementById('password').value;
+ const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
 
-        try {
-          // Sign in with Firebase Authentication
-          await firebase.auth().signInWithEmailAndPassword(enteredEmail, enteredPassword);
+        async function authenticateAndRedirect() {
+            const enteredEmail = document.getElementById('username').value;
+            const enteredPassword = document.getElementById('password').value;
 
-          // Redirect to the specified HTML file
-          window.location.href = 'double_html.html';
-        } catch (error) {
-          console.error('Authentication error:', error);
-          alert('Invalid username or password. Access denied.');
+            try {
+                // Sign in with Firebase Authentication
+                await signInWithEmailAndPassword(auth, enteredEmail, enteredPassword);
+
+                // Redirect to the specified HTML file
+                window.location.href = 'double_html.html';
+            } catch (error) {
+                console.error('Authentication error:', error.code, error.message);
+                alert('Invalid username or password. Access denied.');
+            }
         }
-      }
+        
     </script>
+
+    
 </head>
 <body>
     <div id="loginContainer">
