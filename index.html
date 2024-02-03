@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rocks, the rock cycle and soil</title>
+    <title>Rocks, the rock cycle, and soil</title>
+    <!-- Include Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.2.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.2.0/firebase-auth.js"></script>
 </head>
 <body>
     <div id="loginContainer">
@@ -20,30 +23,32 @@
     <div id="externalContent" style="display: none;"></div>
 
     <script>
+        // Initialize Firebase with your configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAT8ZJK_kVZOJSf7mMssevJhB6CwD8t1SA",
+            authDomain: "science-0.firebaseapp.com",
+            projectId: "science-0",
+            storageBucket: "science-0.appspot.com",
+            messagingSenderId: "147611003857",
+            appId: "1:147611003857:web:961e5e301a133576784ef0",
+            measurementId: "G-2RH29SJ531"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+
         async function authenticateAndRedirect() {
-            var enteredUsername = document.getElementById('username').value;
-            var enteredPassword = document.getElementById('password').value;
+            const enteredUsername = document.getElementById('username').value;
+            const enteredPassword = document.getElementById('password').value;
 
-            // Perform server-side authentication
             try {
-           const response = await fetch('http://localhost:3000/authenticate', {
+                // Sign in with Firebase Authentication
+                await firebase.auth().signInWithEmailAndPassword(enteredUsername, enteredPassword);
 
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ username: enteredUsername, password: enteredPassword }),
-                });
-
-                if (response.ok) {
-                    // Redirect to the specified HTML file
-                    window.location.href = 'double_html.html';
-                } else {
-                    alert('Invalid username or password. Access denied.');
-                }
+                // Redirect to the specified HTML file
+                window.location.href = 'double_html.html';
             } catch (error) {
                 console.error('Authentication error:', error);
-                alert('Error during authentication. Please try again.');
+                alert('Invalid username or password. Access denied.');
             }
         }
     </script>
