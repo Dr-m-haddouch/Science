@@ -6,9 +6,7 @@ const app = express();
 const port = 3000;
 
 app.use(bodyParser.json());
-app.use(cors({
-    origin: 'https://dr-m-haddouch.github.io',
-}));
+app.use(cors()); // Enable CORS for all routes
 
 
 app.post('/authenticate', (req, res) => {
