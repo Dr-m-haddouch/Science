@@ -38,6 +38,11 @@
                 alert('Invalid username or password. Access denied.');
             }
         }
+
+        function redirectToRegister() {
+            // Redirect to the registration page (create a new HTML file for registration)
+            window.location.href = 'register.html';
+        }
     </script>
 </head>
 <body>
@@ -50,6 +55,7 @@
         <input type="password" id="password" required><br>
 
         <button onclick="authenticateAndRedirect()">Login</button>
+        <button onclick="redirectToRegister()">Register</button>
     </div>
 
     <div id="externalContent" style="display: none;"></div>
