@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rocks, the rock cycle and soil</title>
+</head>
+<body>
+    <h1>Rocks, the rock cycle and soil</h1>
+    <button onclick="loadExternalHTML('file:///C:/Users/T470/Desktop/PHYSICS_class/kgs/year6/activity/Igneous_Rock_quiz.html')">Load External HTML 1</button>
+    <button onclick="loadExternalHTML('file:///C:/Users/T470/Desktop/PHYSICS_class/kgs/year6/activity/sediments_Rock_quiz.html')">Load External HTML 2</button>
+    <button onclick="loadExternalHTML('file:///C:/Users/T470/Desktop/PHYSICS_class/kgs/year6/activity/rock_cycle_fillblank.html')">Load External HTML 3</button>
+    <button onclick="loadExternalHTML('file:///C:/Users/T470/Desktop/PHYSICS_class/kgs/year6/activity/Rock_cycle_dragdrop.html')">Load External HTML 4</button>
+    <button onclick="loadExternalHTML('file:///C:/Users/T470/Desktop/PHYSICS_class/kgs/year6/activity/scatter-line-graph.html')">Load External HTML 5</button> 
+    <div id="externalContent"></div>
+
+    <script>
+        function loadExternalHTML(filePath) {
+            var iframe = document.createElement('iframe');
+            iframe.src = filePath;
+            iframe.style.width = '102%';
+            iframe.style.height = '700px';
+            document.getElementById('externalContent').innerHTML = ''; // Clear previous content
+            document.getElementById('externalContent').appendChild(iframe);
+        }
+    </script>
+
+</body>
+</html>
+
