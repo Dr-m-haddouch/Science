@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+     <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,6 +8,7 @@
     <!-- Include Firebase SDK version 8 -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
     <style>
         body {
             display: flex;
@@ -26,6 +27,7 @@
             max-width: 300px;
         }
     </style>
+
     <script>
         // Initialize Firebase with your configuration
         const firebaseConfig = {
@@ -48,12 +50,17 @@
                 // Create user with Firebase Authentication
                 await auth.createUserWithEmailAndPassword(enteredEmail, enteredPassword);
 
-                // Redirect to the specified HTML file after successful registration
-                window.location.href = 'double_html.html';
+                // Redirect to login section after successful registration
+                showLoginSection();
             } catch (error) {
                 console.error('Registration error:', error.code, error.message);
                 alert(`Registration failed. Error: ${error.message}`);
             }
+        }
+
+        function showLoginSection() {
+            document.getElementById('registrationContainer').style.display = 'none';
+            document.getElementById('loginContainer').style.display = 'block';
         }
 
         async function loginUser() {
@@ -65,7 +72,7 @@
                 await auth.signInWithEmailAndPassword(enteredEmail, enteredPassword);
 
                 // Redirect to the specified HTML file after successful login
-                window.location.href = 'double_html.html';
+                window.location.href = 'index1.html';
             } catch (error) {
                 console.error('Login error:', error.code, error.message);
                 alert('Invalid username or password. Access denied.');
@@ -85,7 +92,7 @@
         <button onclick="registerUser()">Register</button>
     </div>
 
-    <div id="loginContainer">
+    <div id="loginContainer" style="display: none;">
         <h2>Login</h2>
         <label for="loginEmail">Email:</label>
         <input type="text" id="loginEmail" required><br>
