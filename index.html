@@ -3,33 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Registration and Login</title>
+    <title>Rocks, the rock cycle and soil</title>
 
     <!-- Include Firebase SDK version 8 -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-
-    <style>
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        #authContainer {
-            text-align: center;
-        }
-
-        .authSection {
-            border: 1px solid #ccc;
-            padding: 20px;
-            margin: 20px;
-            max-width: 300px;
-            display: inline-block;
-        }
-    </style>
 
     <script>
         // Initialize Firebase with your configuration
@@ -45,80 +23,35 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
-async function registerUser() {
-    const enteredEmail = document.getElementById('regEmail').value;
-    const enteredPassword = document.getElementById('regPassword').value;
-
-    try {
-        // Create user with Firebase Authentication
-        const userCredential = await auth.createUserWithEmailAndPassword(enteredEmail, enteredPassword);
-
-        // Send email verification
-        await userCredential.user.sendEmailVerification();
-        console.log('Verification email sent successfully.');
-
-        // Clear registration inputs after successful registration
-        document.getElementById('regEmail').value = '';
-        document.getElementById('regPassword').value = '';
-
-        alert('Registration successful! Please check your email for verification.');
-
-        // Optionally, you can display a message or redirect
-    } catch (error) {
-        console.error('Registration error:', error.code, error.message);
-        alert(`Registration failed. Error: ${error.message}`);
-    }
-}
-
-
-        async function loginUser() {
-            const enteredEmail = document.getElementById('loginEmail').value;
-            const enteredPassword = document.getElementById('loginPassword').value;
+        async function authenticateAndRedirect() {
+            const enteredEmail = document.getElementById('username').value;
+            const enteredPassword = document.getElementById('password').value;
 
             try {
-                // Sign in user with Firebase Authentication
+                // Sign in with Firebase Authentication
                 await auth.signInWithEmailAndPassword(enteredEmail, enteredPassword);
 
-                // Check if the email is verified before allowing login
-                const user = auth.currentUser;
-                if (user && !user.emailVerified) {
-                    alert('Please verify your email before logging in.');
-                    return;
-                }
-
-                // Redirect to the specified HTML file after successful login
-                window.location.href = 'index1.html';
+                // Redirect to the specified HTML file
+                window.location.href = 'double_html.html';
             } catch (error) {
-                console.error('Login error:', error.code, error.message);
+                console.error('Authentication error:', error.code, error.message);
                 alert('Invalid username or password. Access denied.');
             }
         }
     </script>
 </head>
 <body>
-    <div id="authContainer">
-        <div class="authSection" id="registrationContainer">
-            <h2>Register</h2>
-            <label for="regEmail">Email:</label>
-            <input type="text" id="regEmail" required><br>
+    <div id="loginContainer">
+        <h2>Login</h2>
+        <label for="username">Username (Email):</label>
+        <input type="text" id="username" required><br>
 
-            <label for="regPassword">Password:</label>
-            <input type="password" id="regPassword" required><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" required><br>
 
-            <button onclick="registerUser()">Register</button>
-        </div>
-
-        <div class="authSection" id="loginContainer">
-            <h2>Login</h2>
-            <label for="loginEmail">Email:</label>
-            <input type="text" id="loginEmail" required><br>
-
-            <label for="loginPassword">Password:</label>
-            <input type="password" id="loginPassword" required><br>
-
-            <button onclick="loginUser()">Login</button>
-        </div>
+        <button onclick="authenticateAndRedirect()">Login</button>
     </div>
+
+    <div id="externalContent" style="display: none;"></div>
 </body>
 </html>
-
