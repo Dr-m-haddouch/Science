@@ -33,10 +33,14 @@
 
                 // Redirect to the specified HTML file after successful registration
                 window.location.href = 'index1.html';
-            } catch (error) {
-                console.error('Registration error:', error.code, error.message);
-                alert('Registration failed. Please try again.');
-            }
+
+
+} catch (error) {
+    console.error('Registration error:', error.code, error.message);
+    alert(`Registration failed. Error: ${error.message}`);
+}
+
+            
         }
     </script>
 </head>
