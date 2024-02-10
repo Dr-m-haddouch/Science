@@ -1,32 +1,13 @@
-     <!DOCTYPE html>
+       <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Registration and Login</title>
+    <title>User Registration</title>
 
     <!-- Include Firebase SDK version 8 -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-
-    <style>
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        #registrationContainer,
-        #loginContainer {
-            text-align: center;
-            border: 1px solid #ccc;
-            padding: 20px;
-            margin: 20px;
-            max-width: 300px;
-        }
-    </style>
 
     <script>
         // Initialize Firebase with your configuration
@@ -43,39 +24,18 @@
         const auth = firebase.auth();
 
         async function registerUser() {
-            const enteredEmail = document.getElementById('regEmail').value;
-            const enteredPassword = document.getElementById('regPassword').value;
+            const enteredEmail = document.getElementById('email').value;
+            const enteredPassword = document.getElementById('password').value;
 
             try {
                 // Create user with Firebase Authentication
                 await auth.createUserWithEmailAndPassword(enteredEmail, enteredPassword);
 
-                // Redirect to login section after successful registration
-                showLoginSection();
-            } catch (error) {
-                console.error('Registration error:', error.code, error.message);
-                alert(`Registration failed. Error: ${error.message}`);
-            }
-        }
-
-        function showLoginSection() {
-            document.getElementById('registrationContainer').style.display = 'none';
-            document.getElementById('loginContainer').style.display = 'block';
-        }
-
-        async function loginUser() {
-            const enteredEmail = document.getElementById('loginEmail').value;
-            const enteredPassword = document.getElementById('loginPassword').value;
-
-            try {
-                // Sign in user with Firebase Authentication
-                await auth.signInWithEmailAndPassword(enteredEmail, enteredPassword);
-
-                // Redirect to the specified HTML file after successful login
+                // Redirect to the specified HTML file after successful registration
                 window.location.href = 'index1.html';
             } catch (error) {
-                console.error('Login error:', error.code, error.message);
-                alert('Invalid username or password. Access denied.');
+                console.error('Registration error:', error.code, error.message);
+                alert('Registration failed. Please try again.');
             }
         }
     </script>
@@ -83,24 +43,13 @@
 <body>
     <div id="registrationContainer">
         <h2>Register</h2>
-        <label for="regEmail">Email:</label>
-        <input type="text" id="regEmail" required><br>
+        <label for="email">Email:</label>
+        <input type="text" id="email" required><br>
 
-        <label for="regPassword">Password:</label>
-        <input type="password" id="regPassword" required><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" required><br>
 
         <button onclick="registerUser()">Register</button>
-    </div>
-
-    <div id="loginContainer" style="display: none;">
-        <h2>Login</h2>
-        <label for="loginEmail">Email:</label>
-        <input type="text" id="loginEmail" required><br>
-
-        <label for="loginPassword">Password:</label>
-        <input type="password" id="loginPassword" required><br>
-
-        <button onclick="loginUser()">Login</button>
     </div>
 </body>
 </html>
