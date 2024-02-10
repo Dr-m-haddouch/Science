@@ -45,29 +45,31 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
-        async function registerUser() {
-            const enteredEmail = document.getElementById('regEmail').value;
-            const enteredPassword = document.getElementById('regPassword').value;
+async function registerUser() {
+    const enteredEmail = document.getElementById('regEmail').value;
+    const enteredPassword = document.getElementById('regPassword').value;
 
-            try {
-                // Create user with Firebase Authentication
-                const userCredential = await auth.createUserWithEmailAndPassword(enteredEmail, enteredPassword);
+    try {
+        // Create user with Firebase Authentication
+        const userCredential = await auth.createUserWithEmailAndPassword(enteredEmail, enteredPassword);
 
-                // Send email verification
-                await userCredential.user.sendEmailVerification();
+        // Send email verification
+        await userCredential.user.sendEmailVerification();
+        console.log('Verification email sent successfully.');
 
-                // Clear registration inputs after successful registration
-                document.getElementById('regEmail').value = '';
-                document.getElementById('regPassword').value = '';
+        // Clear registration inputs after successful registration
+        document.getElementById('regEmail').value = '';
+        document.getElementById('regPassword').value = '';
 
-                alert('Registration successful! Please check your email for verification.');
+        alert('Registration successful! Please check your email for verification.');
 
-                // Optionally, you can display a message or redirect
-            } catch (error) {
-                console.error('Registration error:', error.code, error.message);
-                alert(`Registration failed. Error: ${error.message}`);
-            }
-        }
+        // Optionally, you can display a message or redirect
+    } catch (error) {
+        console.error('Registration error:', error.code, error.message);
+        alert(`Registration failed. Error: ${error.message}`);
+    }
+}
+
 
         async function loginUser() {
             const enteredEmail = document.getElementById('loginEmail').value;
