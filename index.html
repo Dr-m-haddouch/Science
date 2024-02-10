@@ -1,9 +1,10 @@
-<!DOCTYPE html>
+      <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rocks, the rock cycle and soil</title>
+    <title>User Registration</title>
+
     <!-- Include Firebase SDK version 8 -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
@@ -22,35 +23,33 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
-        async function authenticateAndRedirect() {
-            const enteredEmail = document.getElementById('username').value;
+        async function registerUser() {
+            const enteredEmail = document.getElementById('email').value;
             const enteredPassword = document.getElementById('password').value;
 
             try {
-                // Sign in with Firebase Authentication
-                await auth.signInWithEmailAndPassword(enteredEmail, enteredPassword);
+                // Create user with Firebase Authentication
+                await auth.createUserWithEmailAndPassword(enteredEmail, enteredPassword);
 
-                // Redirect to the specified HTML file
-                window.location.href = 'double_html.html';
+                // Redirect to the specified HTML file after successful registration
+                window.location.href = 'index1.html';
             } catch (error) {
-                console.error('Authentication error:', error.code, error.message);
-                alert('Invalid username or password. Access denied.');
+                console.error('Registration error:', error.code, error.message);
+                alert('Registration failed. Please try again.');
             }
         }
     </script>
 </head>
 <body>
-    <div id="loginContainer">
-        <h2>Login</h2>
-        <label for="username">Username (Email):</label>
-        <input type="text" id="username" required><br>
+    <div id="registrationContainer">
+        <h2>Register</h2>
+        <label for="email">Email:</label>
+        <input type="text" id="email" required><br>
 
         <label for="password">Password:</label>
         <input type="password" id="password" required><br>
 
-        <button onclick="authenticateAndRedirect()">Login</button>
+        <button onclick="registerUser()">Register</button>
     </div>
-
-    <div id="externalContent" style="display: none;"></div>
 </body>
 </html>
