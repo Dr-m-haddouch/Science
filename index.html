@@ -41,6 +41,7 @@
             messagingSenderId: '147611003857',
             appId: '1:147611003857:web:961e5e301a133576784ef0',
         };
+
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
@@ -50,11 +51,16 @@
 
             try {
                 // Create user with Firebase Authentication
-                await auth.createUserWithEmailAndPassword(enteredEmail, enteredPassword);
+                const userCredential = await auth.createUserWithEmailAndPassword(enteredEmail, enteredPassword);
+
+                // Send email verification
+                await userCredential.user.sendEmailVerification();
 
                 // Clear registration inputs after successful registration
                 document.getElementById('regEmail').value = '';
                 document.getElementById('regPassword').value = '';
+
+                alert('Registration successful! Please check your email for verification.');
 
                 // Optionally, you can display a message or redirect
             } catch (error) {
@@ -71,8 +77,15 @@
                 // Sign in user with Firebase Authentication
                 await auth.signInWithEmailAndPassword(enteredEmail, enteredPassword);
 
+                // Check if the email is verified before allowing login
+                const user = auth.currentUser;
+                if (user && !user.emailVerified) {
+                    alert('Please verify your email before logging in.');
+                    return;
+                }
+
                 // Redirect to the specified HTML file after successful login
-                window.location.href = 'double_html.html';
+                window.location.href = 'index1.html';
             } catch (error) {
                 console.error('Login error:', error.code, error.message);
                 alert('Invalid username or password. Access denied.');
@@ -106,3 +119,4 @@
     </div>
 </body>
 </html>
+
