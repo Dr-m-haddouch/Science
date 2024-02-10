@@ -32,7 +32,7 @@
                 await auth.createUserWithEmailAndPassword(enteredEmail, enteredPassword);
 
                 // Redirect to the specified HTML file after successful registration
-                window.location.href = 'index1.html';
+                window.location.href = 'double_html.html';
             } catch (error) {
                 console.error('Registration error:', error.code, error.message);
                 alert(`Registration failed. Error: ${error.message}`);
