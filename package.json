@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "main": "index.html",
   "scripts": {
-  "start": "npm start",
   "build": "npm run build"  // Modify if you have a specific build command
   },
   "dependencies": {
