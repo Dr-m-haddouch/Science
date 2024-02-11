@@ -5,6 +5,6 @@
   "build": "npm run build" 
   },
   "dependencies": {
-    "netlify-cli": "^3.47.0" 
+    "netlify-cli": "^3.50.0",
   }
 }
