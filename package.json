@@ -1,11 +1,10 @@
 {
-  "name": "your-project-name",  // Replace with your actual project name
-  "version": "1.0.0",
+  "name": "your-project-name",  
   "main": "index.html",
   "scripts": {
-  "build": "npm run build"  // Modify if you have a specific build command
+  "build": "npm run build" 
   },
   "dependencies": {
-    "netlify-cli": "^3.47.0"  // Add netlify-cli as a dependency if not already included
+    "netlify-cli": "^3.47.0" 
   }
 }
