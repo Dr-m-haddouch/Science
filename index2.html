@@ -1,4 +1,4 @@
-      <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,22 +8,26 @@
     <!-- Include Firebase SDK version 8 -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
     <style>
         body {
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100vh;
             margin: 0;
         }
 
         #registrationContainer {
             text-align: center;
-            border: 1px solid #ccc;
+            width: 300px;
             padding: 20px;
-            max-width: 300px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f8f8f8;
         }
     </style>
+      
     <script>
         // Initialize Firebase with your configuration
         const firebaseConfig = {
@@ -53,6 +57,12 @@
                 alert('Registration failed. Please try again.');
             }
         }
+
+                // Function to redirect to the registration page
+                function redirectToLogin() {
+            // Redirect to the registration page (assuming register.html)
+            window.location.href = 'login.html';
+        }
     </script>
 </head>
 <body>
@@ -64,8 +74,9 @@
         <input type="password" id="password" required><br>
         <button onclick="registerUser()">Register</button>
        <br>
-        <a href="index1.html">Click here to login</a>
-    </div>
+       <p>Do you have an account? <a href="#" onclick="redirectToLogin()">Login here</a></p>
 
+    </div>
+    <div id="externalContent" style="display: none;"></div>
 </body>
 </html>
