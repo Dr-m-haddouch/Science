@@ -9,7 +9,25 @@
     <!-- Include Firebase SDK version 8 -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
 
+        #loginContainer {
+            text-align: center;
+            width: 300px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background-color: #f8f8f8;
+        }
+    </style>
     <script>
         // Initialize Firebase with your configuration
         const firebaseConfig = {
