@@ -13,12 +13,12 @@
     <script>
         // Initialize Firebase with your configuration
         const firebaseConfig = {
-            apiKey: 'YOUR_API_KEY',
-            authDomain: 'YOUR_AUTH_DOMAIN',
-            projectId: 'YOUR_PROJECT_ID',
-            storageBucket: 'YOUR_STORAGE_BUCKET',
-            messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
-            appId: 'YOUR_APP_ID',
+            apiKey: 'AIzaSyAT8ZJK_kVZOJSf7mMssevJhB6CwD8t1SA',
+            authDomain: 'science-0.firebaseapp.com',
+            projectId: 'science-0',
+            storageBucket: 'science-0.appspot.com',
+            messagingSenderId: '147611003857',
+            appId: '1:147611003857:web:961e5e301a133576784ef0',
         };
 
         firebase.initializeApp(firebaseConfig);
@@ -34,7 +34,7 @@
                 await auth.signInWithEmailAndPassword(enteredEmail, enteredPassword);
 
                 // Redirect to the specified HTML file (assuming double_html.html)
-                window.location.href = 'double_html.html';
+                window.location.href = 'index1.html';
             } catch (error) {
                 console.error('Authentication error:', error.code, error.message);
                 alert('Invalid username or password. Access denied.');
@@ -44,7 +44,7 @@
         // Function to redirect to the registration page
         function redirectToRegister() {
             // Redirect to the registration page (assuming register.html)
-            window.location.href = 'register.html';
+            window.location.href = 'index.html';
         }
     </script>
 </head>
