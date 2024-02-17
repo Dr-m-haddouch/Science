@@ -1,4 +1,4 @@
-<!-- register.html -->
+       <!-- register.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,14 +47,14 @@
             const enteredPassword = document.getElementById('password').value;
 
             try {
-                // Create user with Firebase Authentication
+                // Create user without signing in
                 const userCredential = await firebase.auth().createUserWithEmailAndPassword(enteredEmail, enteredPassword);
 
                 // Send email verification
                 await userCredential.user.sendEmailVerification();
 
-                // Redirect to the specified HTML file after successful registration
-                window.location.href = 'index1.html';
+                // Redirect to the login page after successful registration
+                window.location.href = 'login.html';
             } catch (error) {
                 console.error('Registration error:', error.code, error.message);
                 alert('Registration failed. Please try again.');
