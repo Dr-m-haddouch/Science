@@ -1,4 +1,4 @@
-      <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,7 +18,7 @@
             margin: 0;
         }
 
-        #loginContainer {
+        #registrationContaine {
             text-align: center;
             width: 300px;
             padding: 20px;
@@ -57,6 +57,12 @@
                 alert('Registration failed. Please try again.');
             }
         }
+
+                // Function to redirect to the registration page
+                function redirectToLogin() {
+            // Redirect to the registration page (assuming register.html)
+            window.location.href = 'login.html';
+        }
     </script>
 </head>
 <body>
@@ -68,8 +74,9 @@
         <input type="password" id="password" required><br>
         <button onclick="registerUser()">Register</button>
        <br>
-        <a href="login.html">Click here to login</a>
-    </div>
+       <p>Do you have an account? <a href="#" onclick="redirectToLogin()">Login here</a></p>
 
+    </div>
+    <div id="externalContent" style="display: none;"></div>
 </body>
 </html>
