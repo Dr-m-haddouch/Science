@@ -24,6 +24,7 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
+        // Function to handle authentication and redirect
         async function authenticateAndRedirect() {
             const enteredEmail = document.getElementById('username').value;
             const enteredPassword = document.getElementById('password').value;
@@ -40,6 +41,7 @@
             }
         }
 
+        // Function to redirect to the registration page
         function redirectToRegister() {
             // Redirect to the registration page (assuming register.html)
             window.location.href = 'register.html';
@@ -56,7 +58,7 @@
         <input type="password" id="password" required><br>
 
         <button onclick="authenticateAndRedirect()">Login</button>
-        <button onclick="redirectToRegister()">Register</button>
+        <p>Don't have an account? <a href="#" onclick="redirectToRegister()">Register here</a></p>
     </div>
 
     <div id="externalContent" style="display: none;"></div>
