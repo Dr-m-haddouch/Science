@@ -1,3 +1,4 @@
+<!-- register.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,7 +41,6 @@
         };
 
         firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
 
         async function registerUser() {
             const enteredEmail = document.getElementById('email').value;
@@ -48,7 +48,10 @@
 
             try {
                 // Create user with Firebase Authentication
-                await auth.createUserWithEmailAndPassword(enteredEmail, enteredPassword);
+                const userCredential = await firebase.auth().createUserWithEmailAndPassword(enteredEmail, enteredPassword);
+
+                // Send email verification
+                await userCredential.user.sendEmailVerification();
 
                 // Redirect to the specified HTML file after successful registration
                 window.location.href = 'index1.html';
@@ -58,9 +61,9 @@
             }
         }
 
-                // Function to redirect to the registration page
-                function redirectToLogin() {
-            // Redirect to the registration page (assuming register.html)
+        // Function to redirect to the login page
+        function redirectToLogin() {
+            // Redirect to the login page (assuming login.html)
             window.location.href = 'login.html';
         }
     </script>
@@ -73,9 +76,8 @@
         <label for="password">Password:</label>
         <input type="password" id="password" required><br>
         <button onclick="registerUser()">Register</button>
-       <br>
-       <p>Do you have an account? <a href="#" onclick="redirectToLogin()">Login here</a></p>
-
+        <br>
+        <p>Do you have an account? <a href="#" onclick="redirectToLogin()">Login here</a></p>
     </div>
     <div id="externalContent" style="display: none;"></div>
 </body>
