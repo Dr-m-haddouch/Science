@@ -1,11 +1,10 @@
-      
-   <!-- login.html -->
+  <!-- register.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>User Registration</title>
 
     <!-- Include Firebase SDK version 8 -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -20,7 +19,7 @@
             margin: 0;
         }
 
-        #loginContainer {
+        #registrationContainer {
             text-align: center;
             width: 300px;
             padding: 20px;
@@ -42,49 +41,44 @@
         };
 
         firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
 
-        async function authenticateAndRedirect() {
-            const enteredEmail = document.getElementById('username').value;
+        async function registerUser() {
+            const enteredEmail = document.getElementById('email').value;
             const enteredPassword = document.getElementById('password').value;
 
             try {
-                // Sign in with Firebase Authentication
-                const userCredential = await auth.signInWithEmailAndPassword(enteredEmail, enteredPassword);
+                // Create user without signing in
+                const userCredential = await firebase.auth().createUserWithEmailAndPassword(enteredEmail, enteredPassword);
 
-                // Check if the user's email is verified
-                if (userCredential.user.emailVerified) {
-                    // Redirect to the specified HTML file (assuming dashboard.html)
-                    window.location.href = 'login.html';
-                } else {
-                    // If email is not verified, show an alert and do not redirect
-                    alert('Email not verified. Please check your email and verify your account.');
-                }
+                // Send email verification
+                await userCredential.user.sendEmailVerification();
+
+                // Redirect to the login page after successful registration
+                window.location.href = 'login.html';
             } catch (error) {
-                console.error('Authentication error:', error.code, error.message);
-                alert('Invalid username or password. Access denied.');
+                console.error('Registration error:', error.code, error.message);
+                alert('Registration failed. Please try again.');
             }
         }
 
-        function redirectToRegister() {
-            // Redirect to the registration page (assuming register.html)
-            window.location.href = 'register.html';
+        // Function to redirect to the login page
+        function redirectToLogin() {
+            // Redirect to the login page (assuming login.html)
+            window.location.href = 'login.html';
         }
     </script>
 </head>
 <body>
-    <div id="loginContainer">
-        <h2>Login</h2>
-        <label for="username">Username (Email):</label>
-        <input type="text" id="username" required><br>
-
+    <div id="registrationContainer">
+        <h2>Register</h2>
+        <label for="email">Email:</label>
+        <input type="text" id="email" required><br>
         <label for="password">Password:</label>
         <input type="password" id="password" required><br>
-
-        <button onclick="authenticateAndRedirect()">Login</button>
-        <button onclick="redirectToRegister()">Register</button>
+        <button onclick="registerUser()">Register</button>
+        <br>
+        <p>Do you have an account? <a href="#" onclick="redirectToLogin()">Login here</a></p>
     </div>
-
     <div id="externalContent" style="display: none;"></div>
 </body>
 </html>
