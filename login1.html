@@ -42,27 +42,31 @@
         firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
-        async function authenticateAndRedirect() {
-            const enteredEmail = document.getElementById('username').value;
-            const enteredPassword = document.getElementById('password').value;
+async function authenticateAndRedirect() {
+    const enteredEmail = document.getElementById('username').value;
+    const enteredPassword = document.getElementById('password').value;
 
-            try {
-                // Sign in with Firebase Authentication
-                const userCredential = await auth.signInWithEmailAndPassword(enteredEmail, enteredPassword);
+    console.log('Entered Email:', enteredEmail);
 
-                // Check if the user's email is verified
-                if (userCredential.user.emailVerified) {
-                    // Redirect to the specified HTML file (assuming dashboard.html)
-                    window.location.href = 'double_html.html';
-                } else {
-                    // If email is not verified, show an alert and do not redirect
-                    alert('Email not verified. Please check your email and verify your account.');
-                }
-            } catch (error) {
-                console.error('Authentication error:', error.code, error.message);
-                alert('Invalid username or password. Access denied.');
-            }
+    try {
+        // Sign in with Firebase Authentication
+        const userCredential = await auth.signInWithEmailAndPassword(enteredEmail, enteredPassword);
+
+        console.log('User credentials:', userCredential);
+
+        // Check if the user's email is verified
+        if (userCredential.user.emailVerified) {
+            // Redirect to the specified HTML file (assuming dashboard.html)
+            window.location.href = 'double_html.html';
+        } else {
+            // If email is not verified, show an alert and do not redirect
+            alert('Email not verified. Please check your email and verify your account.');
         }
+    } catch (error) {
+        console.error('Authentication error:', error.code, error.message);
+        alert('Invalid username or password. Access denied.');
+    }
+}
 
         function redirectToRegister() {
             // Redirect to the registration page (assuming register.html)
