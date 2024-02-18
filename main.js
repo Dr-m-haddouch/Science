@@ -1,6 +1,7 @@
 
 
 // Function to update UI based on user authentication status
+document.addEventListener('DOMContentLoaded', function () {
 function updateUI(user) {
     if (user) {
         // User is signed in
@@ -34,3 +35,5 @@ function redirectToLogin() {
 firebase.auth().onAuthStateChanged(function (user) {
     updateUI(user);
 });
+});
+                
