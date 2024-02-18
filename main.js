@@ -1,6 +1,6 @@
 // Include Firebase SDK version 8
-import 'https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js';
-import 'https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js';
+require('https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js');
+require('https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js');
 
         // Initialize Firebase with your configuration
         const firebaseConfig = {
