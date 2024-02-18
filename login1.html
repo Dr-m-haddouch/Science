@@ -52,8 +52,13 @@ async function authenticateAndRedirect() {
         // Sign in with Firebase Authentication
         const userCredential = await auth.signInWithEmailAndPassword(enteredEmail, enteredPassword);
 
-        console.log('User credentials:', userCredential);
 
+
+// Check if the user's email is verified
+console.log('Email verified:', userCredential.user.emailVerified);
+        
+        console.log('User credentials:', userCredential);
+        console.log('Email verified:', userCredential.user.emailVerified);
         // Check if the user's email is verified
         if (userCredential.user.emailVerified) {
             // Redirect to the specified HTML file (assuming dashboard.html)
