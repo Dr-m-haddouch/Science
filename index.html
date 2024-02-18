@@ -1,4 +1,3 @@
-  <!-- register.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,8 +52,12 @@
                 // Send email verification
                 await userCredential.user.sendEmailVerification();
 
-                // Redirect to the login page after successful registration
-                window.location.href = 'login1.html';
+                // Display confirmation message
+                document.getElementById('registrationContainer').innerHTML = `
+                    <h2>Registration Successful</h2>
+                    <p>Please check your email for verification before logging in.</p>
+                    <p>Already have an account? <a href="#" onclick="redirectToLogin()">Login here</a></p>
+                `;
             } catch (error) {
                 console.error('Registration error:', error.code, error.message);
                 alert('Registration failed. Please try again.');
@@ -76,8 +79,6 @@
         <label for="password">Password:</label>
         <input type="password" id="password" required><br>
         <button onclick="registerUser()">Register</button>
-        <br>
-        <p>Do you have an account? <a href="#" onclick="redirectToLogin()">Login here</a></p>
     </div>
     <div id="externalContent" style="display: none;"></div>
 </body>
