@@ -1,6 +1,7 @@
 
 // main.js
-<!-- Include Firebase SDK version 8 -->
+// Include Firebase SDK version 8
+
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
