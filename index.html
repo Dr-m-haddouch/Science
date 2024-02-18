@@ -1,5 +1,8 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,8 +30,9 @@
             background-color: #f8f8f8;
         }
     </style>
-      
+
     <script>
+
         // Initialize Firebase with your configuration
         const firebaseConfig = {
             apiKey: 'AIzaSyAT8ZJK_kVZOJSf7mMssevJhB6CwD8t1SA',
@@ -40,6 +44,25 @@
         };
 
         firebase.initializeApp(firebaseConfig);
+
+        // Function to redirect to the login page
+        function redirectToLogin() {
+            // Redirect to the login page (assuming login.html)
+            window.location.href = 'login1.html';
+        }
+
+        function showRegistrationForm() {
+            // Display the registration form
+            document.getElementById('registrationContainer').innerHTML = `
+                <h2>Register</h2>
+                <label for="email">Email:</label>
+                <input type="text" id="email" required><br>
+                <label for="password">Password:</label>
+                <input type="password" id="password" required><br>
+                <button onclick="registerUser()">Register</button>
+                <p>Already have an account? <a href="#" onclick="redirectToLogin()">Login here</a></p>
+            `;
+        }
 
         async function registerUser() {
             const enteredEmail = document.getElementById('email').value;
@@ -54,32 +77,30 @@
 
                 // Display confirmation message
                 document.getElementById('registrationContainer').innerHTML = `
-                    <h2>Registration Successful</h2>
-                    <p>Please check your email for verification before logging in.</p>
-                    <p>Already have an account? <a href="#" onclick="redirectToLogin()">Login here</a></p>
+                    <div id="confirmationMessage">
+                        <h2>Registration Successful</h2>
+                        <p>Please check your email for verification before logging in.</p>
+                        <p>Already have an account? <a href="#" onclick="redirectToLogin()">Login here</a></p>
+                    </div>
                 `;
             } catch (error) {
                 console.error('Registration error:', error.code, error.message);
                 alert('Registration failed. Please try again.');
             }
         }
-
-        // Function to redirect to the login page
-        function redirectToLogin() {
-            // Redirect to the login page (assuming login.html)
-            window.location.href = 'login1.html';
-        }
     </script>
 </head>
+
 <body>
     <div id="registrationContainer">
-        <h2>Register</h2>
-        <label for="email">Email:</label>
-        <input type="text" id="email" required><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" required><br>
-        <button onclick="registerUser()">Register</button>
+        <p>Already have an account? <a href="#" onclick="redirectToLogin()">Login here</a></p>
     </div>
     <div id="externalContent" style="display: none;"></div>
+
+    <script>
+        // Show the registration form after the page has loaded
+        document.addEventListener('DOMContentLoaded', showRegistrationForm);
+    </script>
 </body>
+
 </html>
