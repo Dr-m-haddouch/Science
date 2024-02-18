@@ -1,9 +1,6 @@
-
-// main.js
 // Include Firebase SDK version 8
-
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+import 'https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js';
+import 'https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js';
 
         // Initialize Firebase with your configuration
         const firebaseConfig = {
@@ -14,6 +11,7 @@
             messagingSenderId: '147611003857',
             appId: '1:147611003857:web:961e5e301a133576784ef0',
         };
+
 firebase.initializeApp(firebaseConfig);
 
 // Function to update UI based on user authentication status
@@ -39,8 +37,6 @@ function updateUI(user) {
         document.getElementById('userDisplayName').innerText = 'Hello!';
     }
 }
-
-
 
 // Function to redirect to the login page
 function redirectToLogin() {
