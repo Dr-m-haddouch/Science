@@ -1,18 +1,4 @@
-// Include Firebase SDK version 8
-import 'https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js';
-import 'https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js';
 
-// Initialize Firebase with your configuration
-const firebaseConfig = {
-    apiKey: 'AIzaSyAT8ZJK_kVZOJSf7mMssevJhB6CwD8t1SA',
-    authDomain: 'science-0.firebaseapp.com',
-    projectId: 'science-0',
-    storageBucket: 'science-0.appspot.com',
-    messagingSenderId: '147611003857',
-    appId: '1:147611003857:web:961e5e301a133576784ef0',
-};
-
-firebase.initializeApp(firebaseConfig);
 
 // Function to update UI based on user authentication status
 function updateUI(user) {
